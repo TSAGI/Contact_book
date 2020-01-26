@@ -107,7 +107,7 @@ class Contact
 
   # This method should delete all of the contacts
   def self.delete_all
-
+    @@contacts.clear
   end
 
   def full_name
