@@ -24,7 +24,7 @@ class Contact
 
   # This method should return all of the existing contacts
   def self.all
-    @@contacts.each {|contact| 
+    @@contacts.each {|contact|       
       puts "First Name: #{contact.first_name}"
       puts "Last Name: #{contact.last_name}"
       puts "Email: #{contact.email}"
@@ -43,64 +43,32 @@ class Contact
     }    
   end
 
-  # This method should allow you to specify 
-  # 1. which of the contact's attributes you want to update
-  # 2. the new value for that attribute
-  # and then make the appropriate change to the contact
-  def update
-    puts "a. First Name"
-    puts "b. Last Name"
-    puts "c. Email"
-    puts "d. Note"
-    print "Which attribute do you want to update: "
-    choice = gets.chomp
+  #this method is linked to the modify_existing_contact method
+  #in crm.rb
+  def update(choice, new)    
     case choice
-          when 'a'
-            print "Enter the new first name: "
-            new = gets.chomp
+          when 'a'            
             @first_name = new
-          when 'b'
-            print "Enter the new last name: "
-            new = gets.chomp
+          when 'b'            
             @last_name = new
-          when 'c'
-            print "Enter the new email: "
-            new = gets.chomp
+          when 'c'            
             @email = new
-          when 'd'
-            print "Enter the new note: "
-            new = gets.chomp
+          when 'd'            
             @note = new                                
     end      
   end
 
-  # This method should work similarly to the find method above
-  # but it should allow you to search for a contact using attributes other than id
-  # by specifying both the name of the attribute and the value
-  # eg. searching for 'first_name', 'Betty' should return the first contact named Betty
-  def self.find_by
-    puts "a. First Name"
-    puts "b. Last Name"
-    puts "c. Email"
-    puts "d. ID"
-    print "Which attribute do you want to search by: "
-    choice = gets.chomp
+  #this method finds the contact based on the attribute selected
+  #in the search_by_attribute method in crm.rb
+  def self.find_by(choice, search)    
     case choice
-      when 'a'
-        print "Enter the first name: "
-        search = gets.chomp
+      when 'a'        
         @@contacts.each {|contact| if contact.first_name == search then return contact end}    
-      when 'b'
-        print "Enter the last name: "
-        search = gets.chomp
+      when 'b'        
         @@contacts.each {|contact| if contact.last_name == search then return contact end}        
-      when 'c'
-        print "Enter the email: "
-        search = gets.chomp
+      when 'c'        
         @@contacts.each {|contact| if contact.email == search then return contact end}        
-      when 'd'
-        print "Enter the ID: "
-        search = gets.chomp.to_i
+      when 'd'        
         @@contacts.each {|contact| if contact.id == search then return contact end}                                     
     end      
   end
@@ -111,15 +79,16 @@ class Contact
   end
 
   def full_name
+    puts
     puts "First Name: #{self.first_name}"
     puts "Last Name: #{self.last_name}"
     puts "Email: #{self.email}"
     puts "Note: #{self.note}"
     puts "ID: #{self.id}"
+    puts
   end
 
-  # This method should delete the contact
-  # HINT: Check the Array class docs for built-in methods that might be useful here
+  # This method should delete the contact  
   def delete        
     @@contacts.delete(self)
   end

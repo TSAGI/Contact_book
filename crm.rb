@@ -10,6 +10,7 @@ class CRM
     while true # repeat indefinitely
       print_main_menu
       user_selected = gets.to_i
+      puts      
       call_option(user_selected)
     end
   end
@@ -35,7 +36,7 @@ class CRM
     end
   end
 
-  def add_new_contact
+  def add_new_contact    
     print 'Enter First Name: '
     first_name = gets.chomp
 
@@ -47,17 +48,45 @@ class CRM
 
     print 'Enter a Note: '
     note = gets.chomp
-
+    puts
     Contact.create(first_name, last_name, email, note)
   end
 
-  def modify_existing_contact
+  # This method should allow you to specify 
+  # 1. which of the contact's attributes you want to update
+  # 2. the new value for that attribute
+  # and then make the appropriate change to the contact
+  def modify_existing_contact    
     print 'Enter ID of contact: '
     id = gets.chomp.to_i
-    Contact.find(id).update  
+    c = Contact.find(id)
+    c.full_name   
+    puts "Which attribute do you want to update: "
+    puts "a. First Name"
+    puts "b. Last Name"
+    puts "c. Email"
+    puts "d. Note"
+    print "Choose a letter: "
+    choice = gets.chomp
+    case choice
+      when 'a'
+        print "Enter the new first name: "
+        new = gets.chomp      
+      when 'b'
+        print "Enter the new last name: "
+        new = gets.chomp      
+      when 'c'
+        print "Enter the new email: "
+        new = gets.chomp      
+      when 'd'
+        print "Enter the new note: "
+        new = gets.chomp                                    
+    end      
+    c.update(choice, new)
+    c.full_name
   end
 
-  def delete_contact
+  def delete_contact    
     print 'Enter ID of contact: '
     id = gets.chomp.to_i
     Contact.find(id).delete    
@@ -67,8 +96,29 @@ class CRM
     Contact.all
   end
 
-  def search_by_attribute
-    Contact.find_by.full_name
+  def search_by_attribute    
+    puts "Which attribute do you want to search by: "
+    puts "a. First Name"
+    puts "b. Last Name"
+    puts "c. Email"
+    puts "d. ID"
+    print "Choose a letter: "
+    choice = gets.chomp
+    case choice
+    when 'a'
+      print "Enter the first name: "
+      search = gets.chomp      
+    when 'b'
+      print "Enter the last name: "
+      search = gets.chomp     
+    when 'c'
+      print "Enter the email: "
+      search = gets.chomp     
+    when 'd'
+      print "Enter the ID: "
+      search = gets.chomp.to_i      
+    end           
+      Contact.find_by(choice, search).full_name      
   end
 
 
