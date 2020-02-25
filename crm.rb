@@ -49,7 +49,12 @@ class CRM
     print 'Enter a Note: '
     note = gets.chomp
     puts
-    Contact.create(first_name, last_name, email, note)
+    Contact.create(
+      first_name: first_name,
+      last_name:  last_name,
+      email:      email,
+      note:       note
+    )
   end
 
   # This method should allow you to specify 
@@ -71,19 +76,23 @@ class CRM
     case choice
       when 'a'
         print "Enter the new first name: "
-        new = gets.chomp      
+        new = gets.chomp
+        c.first_name = new            
       when 'b'
         print "Enter the new last name: "
-        new = gets.chomp      
+        new = gets.chomp
+        c.last_name = new      
       when 'c'
         print "Enter the new email: "
-        new = gets.chomp      
+        new = gets.chomp 
+        c.email = new     
       when 'd'
         print "Enter the new note: "
-        new = gets.chomp                                    
+        new = gets.chomp   
+        c.note = new                                 
     end      
-    c.update(choice, new)
-    c.full_name
+    c.save
+    c.full_name    
   end
 
   def delete_contact    
@@ -93,7 +102,7 @@ class CRM
   end
 
   def display_all_contacts
-    Contact.all
+    Contact.all.each {|contact| contact.full_name}
   end
 
   def search_by_attribute    
@@ -104,24 +113,32 @@ class CRM
     puts "d. ID"
     print "Choose a letter: "
     choice = gets.chomp
+    contact = nil
     case choice
     when 'a'
       print "Enter the first name: "
       search = gets.chomp      
+      contact = Contact.find_by(first_name: search)
     when 'b'
       print "Enter the last name: "
       search = gets.chomp     
+      contact = Contact.find_by(last_name: search)
     when 'c'
       print "Enter the email: "
       search = gets.chomp     
+      contact = Contact.find_by(email: search)
     when 'd'
       print "Enter the ID: "
-      search = gets.chomp.to_i      
-    end           
-      Contact.find_by(choice, search).full_name      
+      search = gets.chomp.to_i   
+      contact = Contact.find(search)   
+    end  
+     if contact then contact.full_name else puts "\nno such contact\n\n" end      
   end
 
 
 end
 a = CRM.new
 a.main_menu
+at_exit do
+  ActiveRecord::Base.connection.close
+end
